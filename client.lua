@@ -18,6 +18,7 @@ Citizen.CreateThread(
     while true do
       Citizen.Wait(0)
 
+      -- this hides the weapon wheel but it still makes the noise and whatnot, going to fix it later.
       HideHudComponentThisFrame(19)
 
       if IsControlJustReleased(0, 37) and IsInputDisabled(0) then
@@ -33,11 +34,9 @@ RegisterNUICallback('main', function(data, cb)
   cb(data.text)
 end)
 
-
 RegisterNUICallback('exit', function(data, cb)
-  chat('Closing')
-  chat(data)
   toggleInventory()
+
   cb('ok')
 end)
 
@@ -54,6 +53,5 @@ function toggleInventory()
 end
 
 function chat(text)
-  TriggerEvent('chatMessage', '[inv]', { 255, 0, 0 }, 'Status ' .. tostring(menuOpen))
-  TriggerEvent('chatMessage', '[inv]', { 0, 255, 0 }, text)
+  TriggerEvent('chatMessage', '[inv]', { 29, 233, 182 }, text)
 end
