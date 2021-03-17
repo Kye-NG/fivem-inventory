@@ -25,6 +25,20 @@ Citizen.CreateThread(
       HideHudComponentThisFrame(17)
       DisableControlAction(0, 37, true)
 
+      if menuOpen then
+        HideHudAndRadarThisFrame()
+
+        HideHudComponentThisFrame( 1 ) -- Wanted Stars
+        HideHudComponentThisFrame( 2 ) -- Weapon Icon
+        HideHudComponentThisFrame( 3 ) -- Cash
+        HideHudComponentThisFrame( 4 ) -- MP Cash
+        HideHudComponentThisFrame( 6 ) -- Vehicle Name
+        HideHudComponentThisFrame( 7 ) -- Area Name
+        HideHudComponentThisFrame( 8 ) -- Vehicle Class      
+        HideHudComponentThisFrame( 9 ) -- Street Name
+        HideHudComponentThisFrame( 13 ) -- Cash Change
+      end
+
       if IsDisabledControlJustReleased(0, 37) and IsInputDisabled(0) then
         toggleInventory()
       end
