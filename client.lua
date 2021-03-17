@@ -18,10 +18,14 @@ Citizen.CreateThread(
     while true do
       Citizen.Wait(0)
 
-      -- this hides the weapon wheel but it still makes the noise and whatnot, going to fix it later.
+      -- Disable the weapon wheel, stats, and saving
+      BlockWeaponWheelThisFrame()
       HideHudComponentThisFrame(19)
+      HideHudComponentThisFrame(20)
+      HideHudComponentThisFrame(17)
+      DisableControlAction(0, 37, true)
 
-      if IsControlJustReleased(0, 37) and IsInputDisabled(0) then
+      if IsDisabledControlJustReleased(0, 37) and IsInputDisabled(0) then
         toggleInventory()
       end
     end

@@ -9,10 +9,12 @@ $(function() {
 
   display(false);
 
+  $.post('https://fivem-inventory/main', JSON.stringify({ text: 'Loaded'}));
+
+
   document.onkeyup = function (data) {
     if (data.which == 9) {
-      $.post('https://fivem-inventory/exit', JSON.stringify({})
-   );
+      $.post('https://fivem-inventory/exit', JSON.stringify({}));
     }
   };
 
