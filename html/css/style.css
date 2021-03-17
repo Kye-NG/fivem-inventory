@@ -3,13 +3,16 @@
   padding: 0;
 }
 
-#test {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
+#app {
   height: 100vh;
+}
+
+.inventory {
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 30px;
   font-weight: 500;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
 }
