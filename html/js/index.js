@@ -4,7 +4,7 @@ console.log('test');
 const app = new Vue({
   el: '#app',
   data: {
-    menuOpen: true,
+    menuOpen: false,
     hotbar: [null, null, null, null, null, null],
     inventory: [['AK-47', null, null, 'Wood', null, null], [null, 'Metal', null, 'Sticks', null, null], [null, null, null, 'Dog Water', 'Cat Cam', 'Wires']]
   },
