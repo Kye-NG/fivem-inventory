@@ -6,7 +6,11 @@ const app = new Vue({
   data: {
     menuOpen: false,
     hotbar: [null, null, null, null, null, null],
-    inventory: [['AK-47', null, null, 'Wood', null, null], [null, 'Metal', null, 'Sticks', null, null], [null, null, null, 'Dog Water', 'Cat Cam', 'Wires']]
+    inventory: [
+      [null, null, null, null, null, null],
+      [null, null, null, null, null, null],
+      [null, null, null, null, null, null]
+    ]
   },
   created: function() {
     window.addEventListener('message', this.setupMessageListener);
@@ -33,6 +37,26 @@ const app = new Vue({
           this.display(false)
         }
       }
+
+      else if(item.type === 'updateItems') {
+        this.resetItems();
+
+        let i = 0;
+        let row = 0;
+
+        for (let obj of item.items) {
+          // Set the obj to the item
+          this.inventory[row][i] = obj;
+
+          i++;
+
+          // When we hit the 6th index, we set the row to the next one.
+          if (i === 6) {
+            i = 0;
+            row++;
+          }
+        }
+      }
     },
     setupCloseListener(data) {
       if (data.which == 9) {
@@ -47,6 +71,13 @@ const app = new Vue({
       this.menuOpen = bool;
 
       console.log(`Set menu bool to: ${bool}`);
+    },
+    resetItems() {
+      this.inventory = [
+        [null, null, null, null, null, null],
+        [null, null, null, null, null, null],
+        [null, null, null, null, null, null]
+      ]
     }
   }
 })

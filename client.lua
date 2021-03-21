@@ -1,4 +1,27 @@
 local menuOpen = false
+local currentItems = {}
+
+RegisterNetEvent('inv:getItems')
+RegisterNetEvent('inv:updateItems')
+
+AddEventHandler('playerSpawned', function()
+  Citizen.CreateThread(function()
+
+    -- Update user items when the player spawns.
+    TriggerServerEvent('inv:getItems')
+
+  end)
+end)
+
+AddEventHandler('inv:updateItems', function(items)
+  currentItems = {}
+  currentItems = items
+
+  SendNUIMessage({
+    type = 'updateItems',
+    items = currentItems
+  })
+end)
 
 Citizen.CreateThread(function()
   while menuOpen do
