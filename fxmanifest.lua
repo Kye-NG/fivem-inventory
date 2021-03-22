@@ -23,5 +23,6 @@ server_scripts {
 files {
   'html/index.html',
   'html/css/style.css',
-  'html/js/index.js'
+  'html/js/index.js',
+  'html/images/*'
 }

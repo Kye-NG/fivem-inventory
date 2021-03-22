@@ -4,6 +4,7 @@ CREATE TABLE items (
   item_id int NOT NULL AUTO_INCREMENT,
   display_name VARCHAR(100) NOT NULL DEFAULT 'Unknown',
   type int NOT NULL DEFAULT 1,
+  image_url VARCHAR(100) NOT NULL DEFAULT 'unknown.png',
   PRIMARY KEY (item_id)
 );
 
@@ -15,8 +16,8 @@ CREATE TABLE user_inventory (
   CONSTRAINT fk_item_id FOREIGN KEY (item_id) REFERENCES items (item_id)
 );
 
-INSERT INTO items (display_name, type)
-  VALUES ('Cash', 1);
+INSERT INTO items (display_name, type, image_url)
+  VALUES ('Cash', 1, 'cash.png');
 
 INSERT INTO items (display_name, type)
   VALUES ('AK-47', 2);

@@ -26,7 +26,7 @@ AddEventHandler('inv:getItems', function(eventParam1, eventParam2)
       { ['@license'] = license },
       function(resultItems)
         for _, item in ipairs(resultItems) do
-          t = { ['name'] = item.display_name, ['quantity'] = item.quantity, ['type'] = item.type }
+          t = { ['name'] = item.display_name, ['quantity'] = item.quantity, ['type'] = item.type, ['imageURL'] = item.image_url }
 
           table.insert(items, tonumber(item.item_id), t)
         end
