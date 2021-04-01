@@ -9,6 +9,7 @@ const app = new Vue({
     inventory: [
       [null, null, null, null, null, null],
       [null, null, null, null, null, null],
+      [null, null, null, null, null, null],
       [null, null, null, null, null, null]
     ]
   },
@@ -74,6 +75,7 @@ const app = new Vue({
     },
     resetItems() {
       this.inventory = [
+        [null, null, null, null, null, null],
         [null, null, null, null, null, null],
         [null, null, null, null, null, null],
         [null, null, null, null, null, null]

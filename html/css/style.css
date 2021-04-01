@@ -28,7 +28,13 @@
 }
 
 .bottom {
-  height: 157px;
+  height: 149px;
+  position: absolute;
+  bottom: 0;
+  width: 822px;
+  right: 25%;
+  left: 50%;
+  margin-left: -411px;
 }
 
 .hotbar-container, .inventory-container {
@@ -51,7 +57,11 @@
   flex-direction: column;
   height: 125px;
   width: 125px;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.inventory-item:hover {
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .hotbar-item > p, .inventory-item > p {
