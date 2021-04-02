@@ -17,7 +17,7 @@
   color: white;
 
   height: 70vh;
-  width: 822px;
+  width: 684px;
   display: flex;
   flex-direction: column;
 }
@@ -28,13 +28,13 @@
 }
 
 .bottom {
-  height: 149px;
+  height: 124px;
   position: absolute;
-  bottom: 0;
-  width: 822px;
+  bottom: 12px;
+  width: 684px;
   right: 25%;
   left: 50%;
-  margin-left: -411px;
+  margin-left: -342px;
 }
 
 .hotbar-container, .inventory-container {
@@ -55,13 +55,13 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 125px;
-  width: 125px;
-  background-color: rgba(0, 0, 0, 0.4);
+  height: 100px;
+  width: 100px;
+  background-color: rgba(255, 255, 255, 0.4);
 }
 
-.inventory-item:hover {
-  background-color: rgba(0, 0, 0, 0.3);
+.hotbar-item:hover, .inventory-item:hover {
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .hotbar-item > p, .inventory-item > p {

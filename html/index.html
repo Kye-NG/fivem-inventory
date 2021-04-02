@@ -11,11 +11,11 @@
   <div id="app">
     <div class="inventory" v-if="menuOpen">
       <div class="top">
-        <div class="inventory-lines" v-for="line in inventory">
+        <div class="inventory-lines" v-for="line in inventoryComp">
           <div class="inventory-container">
             <div class="inventory-item" v-for="item in line">
               <template v-if="item">
-                <img :src="'./images/' + item.imageURL" alt="image" width="105px">
+                <img :src="'./images/' + item.imageURL" alt="image" width="80px">
                 <p class="item-text">
                   {{ item.name }}
                 </p>
@@ -28,11 +28,14 @@
 
     <div class="bottom">
       <div class="hotbar-container">
-        <div class="hotbar-item" v-for="item in hotbar">
-          <img src="https://via.placeholder.com/300" alt="image" width="105px">
-          <p class="item-text">
-            placeholder-item
-          </p>
+        <div class="hotbar-item" v-for="item in hotbarInv">
+          <template v-if="item">
+            <img :src="'./images/' + item.imageURL" alt="image" width="80px">
+            <p class="item-text">
+              {{ item.name }}
+            </p>
+          </template>
+        </div>
         </div>
       </div>
     </div>

@@ -5,13 +5,21 @@ const app = new Vue({
   el: '#app',
   data: {
     menuOpen: false,
-    hotbar: [null, null, null, null, null, null],
     inventory: [
+      [null, null, null, null, null, null],
       [null, null, null, null, null, null],
       [null, null, null, null, null, null],
       [null, null, null, null, null, null],
       [null, null, null, null, null, null]
     ]
+  },
+  computed: {
+    hotbarInv: function () {
+      return this.inventory[4]
+    },
+    inventoryComp: function () {
+      return [this.inventory[0], this.inventory[1], this.inventory[2], this.inventory[3]]
+    }
   },
   created: function() {
     window.addEventListener('message', this.setupMessageListener);
@@ -75,6 +83,7 @@ const app = new Vue({
     },
     resetItems() {
       this.inventory = [
+        [null, null, null, null, null, null],
         [null, null, null, null, null, null],
         [null, null, null, null, null, null],
         [null, null, null, null, null, null],
