@@ -12,6 +12,7 @@ CREATE TABLE fivem.user_inventory (
   license VARCHAR(100),
   item_id int NOT NULL,
   quantity int NOT NULL DEFAULT 1,
+  metadata json DEFAULT NULL,
   KEY item_id (item_id),
   CONSTRAINT fk_item_id FOREIGN KEY (item_id) REFERENCES items (item_id)
 );
@@ -136,11 +137,34 @@ INSERT INTO fivem.items (display_name, type, image_url)
 
 -- test item giving
 INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 1, 50);
-INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 2, 1);
-INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 3, 1);
-INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 4, 1);
-INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 5, 1);
-INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 6, 1);
-INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 7, 1);
-INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 8, 1);
-INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 9, 1);
+INSERT INTO fivem.user_inventory(license, item_id, quantity, metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 2, 1, '{"weapon_hash": "WEAPON_PISTOL"}');
+INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 1, 50);
+INSERT INTO fivem.user_inventory(license, item_id, quantity, metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 2, 1, '{"weapon_hash": "WEAPON_PISTOL"}');
+INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 1, 50);
+INSERT INTO fivem.user_inventory(license, item_id, quantity, metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 2, 1, '{"weapon_hash": "WEAPON_PISTOL"}');
+INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 1, 50);
+INSERT INTO fivem.user_inventory(license, item_id, quantity, metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 2, 1, '{"weapon_hash": "WEAPON_PISTOL"}');
+INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 1, 50);
+INSERT INTO fivem.user_inventory(license, item_id, quantity, metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 2, 1, '{"weapon_hash": "WEAPON_PISTOL"}');
+INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 1, 50);
+INSERT INTO fivem.user_inventory(license, item_id, quantity, metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 2, 1, '{"weapon_hash": "WEAPON_PISTOL"}');
+INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 1, 50);
+INSERT INTO fivem.user_inventory(license, item_id, quantity, metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 2, 1, '{"weapon_hash": "WEAPON_PISTOL"}');
+INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 1, 50);
+INSERT INTO fivem.user_inventory(license, item_id, quantity, metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 2, 1, '{"weapon_hash": "WEAPON_PISTOL"}');
+INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 1, 50);
+INSERT INTO fivem.user_inventory(license, item_id, quantity, metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 2, 1, '{"weapon_hash": "WEAPON_PISTOL"}');
+INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 1, 50);
+INSERT INTO fivem.user_inventory(license, item_id, quantity, metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 2, 1, '{"weapon_hash": "WEAPON_PISTOL"}');
+INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 1, 50);
+INSERT INTO fivem.user_inventory(license, item_id, quantity, metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 2, 1, '{"weapon_hash": "WEAPON_PISTOL"}');
+INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 1, 50);
+INSERT INTO fivem.user_inventory(license, item_id, quantity, metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 2, 1, '{"weapon_hash": "WEAPON_PISTOL"}');
+INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 1, 50);
+INSERT INTO fivem.user_inventory(license, item_id, quantity, metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 2, 1, '{"weapon_hash": "WEAPON_PISTOL"}');
+INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 1, 50);
+INSERT INTO fivem.user_inventory(license, item_id, quantity, metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 2, 1, '{"weapon_hash": "WEAPON_PISTOL"}');
+INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 1, 50);
+INSERT INTO fivem.user_inventory(license, item_id, quantity, metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 2, 1, '{"weapon_hash": "WEAPON_PISTOL"}');
+INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 1, 50);
+INSERT INTO fivem.user_inventory(license, item_id, quantity, metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 2, 1, '{"weapon_hash": "WEAPON_PISTOL"}');

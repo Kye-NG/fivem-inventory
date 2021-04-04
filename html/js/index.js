@@ -24,12 +24,6 @@ const app = new Vue({
   created: function() {
     window.addEventListener('message', this.setupMessageListener);
     window.addEventListener('keyup', this.setupCloseListener);
-
-    axios.post('https://fivem-inventory/main', { text: 'loaded with vue' }).then(data => {
-      console.log(data);
-    }).catch(e => {
-      console.log(e);
-    })
   },
   destroyed: function() {
     window.removeEventListener('message', this.setupMessageListener);
@@ -50,6 +44,8 @@ const app = new Vue({
       else if(item.type === 'updateItems') {
         this.resetItems();
 
+        console.log(item.items);
+
         let i = 0;
         let row = 0;
 
@@ -60,7 +56,7 @@ const app = new Vue({
           i++;
 
           // When we hit the 6th index, we set the row to the next one.
-          if (i === 6) {
+          if (i === 7) {
             i = 0;
             row++;
           }

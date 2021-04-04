@@ -1,5 +1,9 @@
+local function isempty(s)
+  return s == nil or s == ''
+end
+
 local menuOpen = false
-local currentItems = {}
+local itemLayout = {}
 
 RegisterNetEvent('inv:getItems')
 RegisterNetEvent('inv:updateItems')
@@ -14,26 +18,13 @@ AddEventHandler('playerSpawned', function()
 end)
 
 AddEventHandler('inv:updateItems', function(items)
-  currentItems = {}
-  currentItems = items
+  itemLayout = {}
+  itemLayout = items
 
   SendNUIMessage({
     type = 'updateItems',
-    items = currentItems
+    items = itemLayout
   })
-end)
-
-Citizen.CreateThread(function()
-  while menuOpen do
-    Citizen.Wait(0)
-
-    DisableControlAction(0, 1, menuOpen) -- LookLeftRight
-    DisableControlAction(0, 2, menuOpen) -- LookUpDown
-    DisableControlAction(0, 142, menuOpen) -- MeleeAttackAlternate
-    DisableControlAction(0, 18, menuOpen) -- Enter
-    DisableControlAction(0, 322, menuOpen) -- ESC
-    DisableControlAction(0, 106, menuOpen) -- VehicleMouseControlOverride
-  end
 end)
 
 Citizen.CreateThread(
@@ -48,6 +39,14 @@ Citizen.CreateThread(
       HideHudComponentThisFrame(17)
       DisableControlAction(0, 37, true)
 
+      DisableControlAction(0, 157, true)
+      DisableControlAction(0, 158, true)
+      DisableControlAction(0, 160, true)
+      DisableControlAction(0, 164, true)
+      DisableControlAction(0, 165, true)
+      DisableControlAction(0, 159, true)
+      DisableControlAction(0, 161, true)
+
       if menuOpen then
         HideHudAndRadarThisFrame()
 
@@ -60,20 +59,63 @@ Citizen.CreateThread(
         HideHudComponentThisFrame( 8 ) -- Vehicle Class      
         HideHudComponentThisFrame( 9 ) -- Street Name
         HideHudComponentThisFrame( 13 ) -- Cash Change
+
+        DisableControlAction(0, 1, menuOpen) -- LookLeftRight
+        DisableControlAction(0, 2, menuOpen) -- LookUpDown
+        DisableControlAction(0, 142, menuOpen) -- MeleeAttackAlternate
+        DisableControlAction(0, 18, menuOpen) -- Enter
+        DisableControlAction(0, 322, menuOpen) -- ESC
+        DisableControlAction(0, 106, menuOpen) -- VehicleMouseControlOverride
       end
 
       if IsDisabledControlJustReleased(0, 37) and IsInputDisabled(0) then
         toggleInventory()
       end
+
+      if IsDisabledControlJustReleased(0, 157) and not menuOpen then
+        UseItem(1)
+      elseif IsDisabledControlJustReleased(0, 158) and not menuOpen then
+        UseItem(2)
+      elseif IsDisabledControlJustReleased(0, 160) and not menuOpen then
+        UseItem(3)
+      elseif IsDisabledControlJustReleased(0, 164) and not menuOpen then
+        UseItem(4)
+      elseif IsDisabledControlJustReleased(0, 165) and not menuOpen then
+        UseItem(5)
+      elseif IsDisabledControlJustReleased(0, 159) and not menuOpen then
+        UseItem(6)
+      elseif IsDisabledControlJustReleased(0, 161) and not menuOpen then
+        UseItem(7)
+      end
     end
   end
 )
 
-RegisterNUICallback('main', function(data, cb)
-  chat(data.text)
+function UseItem(number)
+  local itemSelected = itemLayout[28 + number]
 
-  cb(data.text)
-end)
+  if not isempty(itemSelected) then
+    print(json.encode(itemSelected))
+
+    if itemSelected.type == 1 then
+      print('Useless type 1 item')
+    elseif itemSelected.type == 2 then
+      local pedId = PlayerPedId()
+      local metadata = json.decode(itemSelected.metadata)
+
+      if HasPedGotWeapon(pedId, metadata.weapon_hash) then
+        RemoveWeaponFromPed(pedId, metadata.weapon_hash, false)
+
+        SetPedAmmo(pedId, weaponHash, 0)
+      else
+        local weaponHash = GetHashKey(metadata.weapon_hash)
+  
+        GiveWeaponToPed(pedId, weaponHash, 10, false, true)
+      end
+    end
+
+  end
+end
 
 RegisterNUICallback('exit', function(data, cb)
   toggleInventory()
@@ -96,3 +138,4 @@ end
 function chat(text)
   TriggerEvent('chatMessage', '[inv]', { 29, 233, 182 }, text)
 end
+
