@@ -6,12 +6,13 @@ const app = new Vue({
   data: {
     menuOpen: false,
     inventory: [
-      [null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null],
+      [{name: 'Cash', imageURL: 'cash.png'}, null, null, null, null, null, null],
+      [null, null, null, null, null, {name: 'Pistol', imageURL: 'pistol.png'}, null],
       [null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null]
-    ]
+    ],
+    currentDraggedItem: []
   },
   computed: {
     hotbarInv: function () {
@@ -30,6 +31,20 @@ const app = new Vue({
     window.removeEventListener('keyup', this.setupCloseListener);
   },
   methods: {
+    onDrag(event, row, col) {
+      this.currentDraggedItem[0] = row;
+      this.currentDraggedItem[1] = col;
+    },
+    onDrop(event, row, col) {
+      let temp = this.inventory[this.currentDraggedItem[0]][this.currentDraggedItem[1]];
+
+      this.inventory[this.currentDraggedItem[0]][this.currentDraggedItem[1]] = this.inventory[row][col];
+      this.inventory[row][col] = temp;
+
+      // Vue add reactivity because its not default.
+      app.$set(app.inventory, row, this.inventory[row])
+      app.$set(app.inventory, this.currentDraggedItem[0], this.inventory[this.currentDraggedItem[0]])
+    },
     setupMessageListener(event) {
       const item = event.data;
 
@@ -43,8 +58,6 @@ const app = new Vue({
 
       else if(item.type === 'updateItems') {
         this.resetItems();
-
-        console.log(item.items);
 
         let i = 0;
         let row = 0;
@@ -74,8 +87,6 @@ const app = new Vue({
     },
     display(bool) {
       this.menuOpen = bool;
-
-      console.log(`Set menu bool to: ${bool}`);
     },
     resetItems() {
       this.inventory = [
@@ -88,3 +99,21 @@ const app = new Vue({
     }
   }
 })
+
+$(document).ready(function() {
+  $('.draggable-item').draggable({
+    helper: 'clone',
+    revert: 'invalid',
+    zIndex: 10,
+    start: function(event, ui) {
+      app.onDrag(event, $(this).data("row"), $(this).data("col"))
+    }
+  });
+
+  $('.draggable-item').droppable({
+    accept: '.draggable-item',
+    drop: function(event, ui) {
+      app.onDrop(event, $(this).data("row"), $(this).data("col"))
+    }
+  });
+});
