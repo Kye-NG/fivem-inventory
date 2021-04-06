@@ -6,8 +6,8 @@ const app = new Vue({
   data: {
     menuOpen: false,
     inventory: [
-      [{name: 'Cash', imageURL: 'cash.png'}, null, null, null, null, null, null],
-      [null, null, null, null, null, {name: 'Pistol', imageURL: 'pistol.png'}, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null]
@@ -42,8 +42,17 @@ const app = new Vue({
       this.inventory[row][col] = temp;
 
       // Vue add reactivity because its not default.
-      app.$set(app.inventory, row, this.inventory[row])
-      app.$set(app.inventory, this.currentDraggedItem[0], this.inventory[this.currentDraggedItem[0]])
+      app.$set(app.inventory, row, this.inventory[row]);
+      app.$set(app.inventory, this.currentDraggedItem[0], this.inventory[this.currentDraggedItem[0]]);
+
+      axios.post('https://fivem-inventory/move_item', {
+        from: [this.currentDraggedItem[0], this.currentDraggedItem[1]],
+        to: [row, col]
+      }).then(data => {
+        console.log(data);
+      }).catch(e => {
+        console.log(e);
+      })
     },
     setupMessageListener(event) {
       const item = event.data;

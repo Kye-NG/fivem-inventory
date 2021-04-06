@@ -123,6 +123,17 @@ RegisterNUICallback('exit', function(data, cb)
   cb('ok')
 end)
 
+RegisterNUICallback('move_item', function(data, cb)
+  local fromIndex = (data.from[2] + 1) + (data.from[1] * 7)
+  local toIndex = (data.to[2] + 1) + (data.to[1] * 7)
+
+  local tempItem = itemLayout[fromIndex]
+  itemLayout[fromIndex] = itemLayout[toIndex]
+  itemLayout[toIndex] = tempItem
+
+  cb('ok')
+end)
+
 function toggleInventory() 
   menuOpen = not menuOpen
 
