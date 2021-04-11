@@ -101,16 +101,21 @@ function UseItem(number)
       print('Useless type 1 item')
     elseif itemSelected.type == 2 then
       local pedId = PlayerPedId()
-      local metadata = json.decode(itemSelected.metadata)
 
-      if HasPedGotWeapon(pedId, metadata.weapon_hash) then
-        RemoveWeaponFromPed(pedId, metadata.weapon_hash, false)
+      local metadata = json.decode(itemSelected.metadata)
+      local item_metadata = json.decode(itemSelected.item_metadata)
+
+      local weaponHash = GetHashKey(metadata.hash)
+
+      if HasPedGotWeapon(pedId, weaponHash) then
+        RemoveWeaponFromPed(pedId, weaponHash, false)
 
         SetPedAmmo(pedId, weaponHash, 0)
       else
-        local weaponHash = GetHashKey(metadata.weapon_hash)
-  
         GiveWeaponToPed(pedId, weaponHash, 10, false, true)
+
+        print(item_metadata.ammunition)
+        SetPedAmmo(pedId, weaponHash, item_metadata.ammunition)
       end
     end
 

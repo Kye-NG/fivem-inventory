@@ -26,9 +26,9 @@ AddEventHandler('inv:getItems', function(eventParam1, eventParam2)
       { ['@license'] = license },
       function(resultItems)
         for _, item in ipairs(resultItems) do
-          t = { ['name'] = item.display_name, ['quantity'] = item.quantity, ['type'] = item.type, ['imageURL'] = item.image_url, ['metadata'] = item.metadata }
+          t = { ['name'] = item.display_name, ['quantity'] = item.quantity, ['type'] = item.type, ['imageURL'] = item.image_url, ['metadata'] = item.metadata, ['item_metadata'] = item.item_metadata }
 
-          table.insert(items, tonumber(item.item_id), t)
+          table.insert(items, t)
         end
 
         TriggerClientEvent('inv:updateItems', player, items)
