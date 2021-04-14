@@ -138,6 +138,7 @@ INSERT INTO fivem.items (display_name, type, image_url, metadata)
 
 -- test item giving
 INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 1, 50);
+INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 3, 1, '{"ammunition": "50"}');
 INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 39, 1, '{"ammunition": "50"}');
 INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 38, 1, '{"ammunition": "50"}');
 INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 37, 1, '{"ammunition": "50"}');

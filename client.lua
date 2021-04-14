@@ -4,6 +4,7 @@ end
 
 local menuOpen = false
 local itemLayout = {}
+local lastWeaponHash = ''
 
 RegisterNetEvent('inv:getItems')
 RegisterNetEvent('inv:updateItems')
@@ -112,10 +113,13 @@ function UseItem(number)
 
         SetPedAmmo(pedId, weaponHash, 0)
       else
+        RemoveWeaponFromPed(pedId, lastWeaponHash, false)
+
         GiveWeaponToPed(pedId, weaponHash, 10, false, true)
 
-        print(item_metadata.ammunition)
-        SetPedAmmo(pedId, weaponHash, item_metadata.ammunition)
+        SetPedAmmo(pedId, weaponHash, tonumber(item_metadata.ammunition))
+
+        lastWeaponHash = weaponHash
       end
     end
 

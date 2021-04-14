@@ -3,6 +3,7 @@
   padding: 0;
   font-family: 'Roboto', sans-serif;
   user-select: none;
+  overflow: hidden;
 }
 
 #app {
@@ -59,6 +60,10 @@
   width: 80px;
   background-color: rgba(255, 255, 255, 0.2);
   box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+  position: relative;
+
+  padding-bottom: 20px;
+  box-sizing: border-box;
 }
 
 .hotbar-item:hover, .inventory-item:hover {
@@ -77,6 +82,9 @@
   background-color: rgba(0, 0, 0, 0.2);
   padding: 0 2px;
   box-sizing: border-box;
+
+  position: absolute;
+  bottom: 0;
 }
 
 .item-text > p {
