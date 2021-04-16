@@ -119,3 +119,7 @@
 .dontshow {
   display: none;
 }
+
+.active {
+  background-color: rgba(62, 94, 124, 0.6) !important;
+}

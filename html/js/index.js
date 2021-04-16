@@ -5,6 +5,7 @@ const app = new Vue({
   el: '#app',
   data: {
     menuOpen: false,
+    activeItem: null,
     inventory: [
       [null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null],
@@ -15,10 +16,10 @@ const app = new Vue({
     currentDraggedItem: []
   },
   computed: {
-    hotbarInv: function () {
+    hotbarInv() {
       return this.inventory[4]
     },
-    inventoryComp: function () {
+    inventoryComp() {
       return [this.inventory[0], this.inventory[1], this.inventory[2], this.inventory[3]]
     }
   },
@@ -83,6 +84,10 @@ const app = new Vue({
             row++;
           }
         }
+      }
+
+      else if (item.type === 'activeChange') {
+        this.activeItem = item.activeId;
       }
     },
     setupCloseListener(data) {

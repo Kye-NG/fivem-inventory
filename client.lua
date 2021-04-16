@@ -112,6 +112,11 @@ function UseItem(number)
         RemoveWeaponFromPed(pedId, weaponHash, false)
 
         SetPedAmmo(pedId, weaponHash, 0)
+
+        SendNUIMessage({
+          type = 'activeChange',
+          activeId = nil
+        })
       else
         RemoveWeaponFromPed(pedId, lastWeaponHash, false)
 
@@ -120,6 +125,11 @@ function UseItem(number)
         SetPedAmmo(pedId, weaponHash, tonumber(item_metadata.ammunition))
 
         lastWeaponHash = weaponHash
+
+        SendNUIMessage({
+          type = 'activeChange',
+          activeId = number - 1
+        })
       end
     end
 
@@ -133,6 +143,8 @@ RegisterNUICallback('exit', function(data, cb)
 end)
 
 RegisterNUICallback('move_item', function(data, cb)
+  -- To:do remove active index if the item was moved and was active.
+
   local fromIndex = (data.from[2] + 1) + (data.from[1] * 7)
   local toIndex = (data.to[2] + 1) + (data.to[1] * 7)
 
