@@ -257,39 +257,3 @@ INSERT INTO fivem.items (display_name, type, image_url, metadata)
 
 INSERT INTO fivem.items (display_name, type, image_url, metadata)
   VALUES ('Compact Launcher', 2, 'compactlauncher.png', '{"hash": "WEAPON_COMPACTLAUNCHER"}');
-
--- test item giving
-INSERT INTO fivem.user_inventory(license, item_id, quantity) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 1, 50);
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 3, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 40, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 41, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 42, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 43, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 44, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 45, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 46, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 47, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 48, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 49, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 50, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 51, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 52, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 53, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 54, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 55, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 56, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 57, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 58, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 59, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 60, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 61, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 62, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 63, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 64, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 65, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 66, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 67, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 68, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 69, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 70, 1, '{"ammunition": "50"}');
-INSERT INTO fivem.user_inventory(license, item_id, quantity, item_metadata) VALUES ('license:8c60b253d34fd38cada69c4b1daf93debf01030a', 71, 1, '{"ammunition": "50"}');

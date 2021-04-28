@@ -14,7 +14,11 @@ author 'Kye Norman-Gill'
 
 ui_page 'html/index.html'
 
-client_script 'client.lua'
+client_scripts {
+  'client.lua',
+  'client.js'
+}
+
 server_scripts {
   '@mysql-async/lib/MySQL.lua',
   'server/server.js'
