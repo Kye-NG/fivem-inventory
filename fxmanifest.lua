@@ -16,7 +16,7 @@ ui_page 'html/index.html'
 
 client_scripts {
   'client.lua',
-  'client.js'
+  'client/client.js'
 }
 
 server_scripts {
