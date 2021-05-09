@@ -18,14 +18,71 @@ const pool = mysql.createPool(config);
 
 const inventoryMaster = {};
 
+// Timed updates.
+setInterval(() => {
+  const time = Date.now();
+
+  const allLicenses = Object.keys(inventoryMaster).map(e => {
+    return `\"${e}\"`
+  });
+
+  if (allLicenses.length) {
+    const deleteSQL = `
+      DELETE FROM fivem.user_inventory
+        WHERE license = ${allLicenses.join(' OR license = ')};
+    `;
+
+    pool.execute(deleteSQL, (err) => {
+      if (err) {
+        sendWH(`Error deleting invs in update: ${err}`)
+      } else {
+        const insertSQL = `
+          INSERT INTO fivem.user_inventory (license, item_id, quantity, item_metadata)
+            VALUES ?
+        `;
+
+        const invArray = [];
+
+        for (const [license, value] of Object.entries(inventoryMaster)) {
+          if (!value.length) { continue; }
+
+          let tempArray = [];
+
+          for (let i = 0; i < value.length; i++) {
+            tempArray.push(license);
+            tempArray.push(value[i].item_id);
+            tempArray.push(value[i].quantity);
+            tempArray.push(value[i].item_metadata);
+
+            invArray.push(tempArray);
+
+            tempArray = [];
+          }
+        }
+
+        // If theres nothing in inventories, dont bother.
+        if (!invArray.length) { return; }
+
+        pool.query(insertSQL, [invArray], (err) => {
+          if (err) {
+            sendWH(`Err inserting DB:\n\n ${err}`)
+          } else {
+            sendWH(`Successfully updated inventory in \`${Date.now() - time}\`ms`);
+          }
+        });
+      }
+    });
+  }
+}, 1000 * 60 * 5); // 5 minutes
+
 /*
  * To:Do
  * - Add inventory locations to metadata.
- * - Add interval for saving inventories to database.
  * - Add destroying of items.
  * - Add trading for items (to be used in crafting etc.)
  * - Add exports for has_item, has_items, trade_items, give item, etc.
  * - Add a way to keep users inven in memory until save, then remove, when they leave.
+ * - Sync all players if script is restarted. Instead of on join.
  */
 
 // Server events.
@@ -44,7 +101,8 @@ onNet('inv:clearInventory', () => {clearInventory(source)});
 
 async function playerJoined() {
   const player = source;
-  const license = GetPlayerIdentifier(player, 1);
+  const license = getLicense(player);
+  const time = Date.now();
 
   // Set their inventory to memory;
   inventoryMaster[license] = await intialiseItems(license).catch(e => {
@@ -52,12 +110,12 @@ async function playerJoined() {
   });
 
   // Joined server notification webhook.
-  sendWH(`Player ${GetPlayerName(player)} joined!`);
+  sendWH(`Player ${GetPlayerName(player)} joined! Inv Sync took \`${Date.now() - time}\`ms`);
 }
 
 function playerLeft(reason) {
   const player = source;
-  const license = GetPlayerIdentifier(player, 1);
+  const license = getLicense(player);
 
   // Needs to be updated so if they leave before update they dont lose their progress.
   delete inventoryMaster[license];
@@ -95,14 +153,15 @@ function intialiseItems(license) {
 // Send the items to the client from memory.
 function getItems(source) {
   const player = source;
-  const license = GetPlayerIdentifier(player, 1);
+  const license = getLicense(player);
 
   emitNet('inv:updateItems', player, inventoryMaster[license]);
 }
 
 function giveItem(source, itemId) {
   const player = source;
-  const license = GetPlayerIdentifier(player, 1);
+  const license = getLicense(player);
+  const time = Date.now();
 
   // Setup dummy item.
   const item = {
@@ -143,22 +202,18 @@ function giveItem(source, itemId) {
 
       // Update the items.
       getItems(player);
+
+      sendWH(`Item definition request took \`${Date.now() - time}\`ms`);
     }
   });
 }
 
 function clearInventory(source) {
-  // const player = source;
-  // const license = GetPlayerIdentifier(player, 1);
+  const player = source;
+  const license = getLicense(player);
 
-  // pool.execute(`
-  //   DELETE FROM fivem.user_inventory
-  //     WHERE license = ?
-  // `,
-  // [license],
-  // (err, results, fields) => {
-  //   getItems(player);
-  // });
+  // Needs to be updated so if they leave before update they dont lose their progress.
+  inventoryMaster[license] = [];
 }
 
 // For testing.
@@ -172,3 +227,21 @@ function sendWH(content) {
 RegisterCommand('give', (source, args, raw) => {
   giveItem(source, parseInt(args[0]))
 }, false);
+
+function getLicense(player) {
+  let foundLicense = false;
+  let counter = 0;
+
+  while (!foundLicense) {
+
+    const ident = GetPlayerIdentifier(player, counter);
+
+    if (ident.startsWith('license:')) {
+      foundLicense = true;
+
+      return ident;
+    }
+
+    counter++;
+  }
+}

@@ -13,7 +13,7 @@ AddEventHandler('playerSpawned', function()
   Citizen.CreateThread(function()
 
     -- Update user items when the player spawns.
-    TriggerServerEvent('inv:clearInventory')
+    -- TriggerServerEvent('inv:clearInventory')
 
   end)
 end)
