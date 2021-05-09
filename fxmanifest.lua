@@ -15,7 +15,7 @@ author 'Kye Norman-Gill'
 ui_page 'html/index.html'
 
 client_scripts {
-  'client.lua',
+  -- 'client.lua',
   'client/client.js'
 }
 

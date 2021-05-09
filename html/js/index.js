@@ -46,14 +46,14 @@ const app = new Vue({
       app.$set(app.inventory, row, this.inventory[row]);
       app.$set(app.inventory, this.currentDraggedItem[0], this.inventory[this.currentDraggedItem[0]]);
 
-      axios.post('https://fivem-inventory/move_item', {
-        from: [this.currentDraggedItem[0], this.currentDraggedItem[1]],
-        to: [row, col]
-      }).then(data => {
-        console.log(data);
-      }).catch(e => {
-        console.log(e);
-      })
+      // axios.post('https://fivem-inventory/move_item', {
+      //   from: [this.currentDraggedItem[0], this.currentDraggedItem[1]],
+      //   to: [row, col]
+      // }).then(data => {
+      //   console.log(data);
+      // }).catch(e => {
+      //   console.log(e);
+      // })
     },
     setupMessageListener(event) {
       const item = event.data;
@@ -96,7 +96,7 @@ const app = new Vue({
           console.log(data);
         }).catch(e => {
           console.log(e);
-        })
+        });
       }
     },
     display(bool) {

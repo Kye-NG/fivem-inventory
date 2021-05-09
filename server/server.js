@@ -11,69 +11,12 @@ const config = {
 };
 
 // Test webhook url.
-const webhookUrl = '';
+const webhookUrl = 'https://discord.com/api/webhooks/840201448830271528/UafoU43hSjpKJ3onVVTfvUkcilyPMu8OzCN5qrJhAroCbkkCyy4blsV2ncriN1-ZZf9C';
 
 // Create the connection pool.
 const pool = mysql.createPool(config);
 
 const inventoryMaster = {};
-
-// Timed updates.
-setInterval(() => {
-  const time = Date.now();
-
-  const allLicenses = Object.keys(inventoryMaster).map(e => {
-    return `\"${e}\"`
-  });
-
-  if (allLicenses.length) {
-    const deleteSQL = `
-      DELETE FROM fivem.user_inventory
-        WHERE license = ${allLicenses.join(' OR license = ')};
-    `;
-
-    pool.execute(deleteSQL, (err) => {
-      if (err) {
-        sendWH(`Error deleting invs in update: ${err}`)
-      } else {
-        const insertSQL = `
-          INSERT INTO fivem.user_inventory (license, item_id, quantity, item_metadata)
-            VALUES ?
-        `;
-
-        const invArray = [];
-
-        for (const [license, value] of Object.entries(inventoryMaster)) {
-          if (!value.length) { continue; }
-
-          let tempArray = [];
-
-          for (let i = 0; i < value.length; i++) {
-            tempArray.push(license);
-            tempArray.push(value[i].item_id);
-            tempArray.push(value[i].quantity);
-            tempArray.push(value[i].item_metadata);
-
-            invArray.push(tempArray);
-
-            tempArray = [];
-          }
-        }
-
-        // If theres nothing in inventories, dont bother.
-        if (!invArray.length) { return; }
-
-        pool.query(insertSQL, [invArray], (err) => {
-          if (err) {
-            sendWH(`Err inserting DB:\n\n ${err}`)
-          } else {
-            sendWH(`Successfully updated inventory in \`${Date.now() - time}\`ms`);
-          }
-        });
-      }
-    });
-  }
-}, 1000 * 60 * 5); // 5 minutes
 
 /*
  * To:Do
@@ -151,7 +94,7 @@ function intialiseItems(license) {
 }
 
 // Send the items to the client from memory.
-function getItems(source) {
+function getItems() {
   const player = source;
   const license = getLicense(player);
 
@@ -218,15 +161,12 @@ function clearInventory(source) {
 
 // For testing.
 function sendWH(content) {
-  axios.post(webhookUrl, { content }).catch(e => {
-    console.log(e);
-  });
+  if (webhookUrl) {
+    axios.post(webhookUrl, { content }).catch(e => {
+      console.log(e);
+    });
+  }
 }
-
-// To be removed and made into an export.
-RegisterCommand('give', (source, args, raw) => {
-  giveItem(source, parseInt(args[0]))
-}, false);
 
 function getLicense(player) {
   let foundLicense = false;
@@ -245,3 +185,72 @@ function getLicense(player) {
     counter++;
   }
 }
+
+
+// ----- Interval Save --------------------------------------------------------------------
+
+// Timed updates.
+setInterval(() => {
+  const time = Date.now();
+
+  const allLicenses = Object.keys(inventoryMaster).map(e => {
+    return `\"${e}\"`
+  });
+
+  if (allLicenses.length) {
+    const deleteSQL = `
+      DELETE FROM fivem.user_inventory
+        WHERE license = ${allLicenses.join(' OR license = ')};
+    `;
+
+    pool.execute(deleteSQL, (err) => {
+      if (err) {
+        sendWH(`Error deleting invs in update: ${err}`)
+      } else {
+        const insertSQL = `
+          INSERT INTO fivem.user_inventory (license, item_id, quantity, item_metadata)
+            VALUES ?
+        `;
+
+        const invArray = [];
+
+        for (const [license, value] of Object.entries(inventoryMaster)) {
+          if (!value.length) { continue; }
+
+          let tempArray = [];
+
+          for (let i = 0; i < value.length; i++) {
+            tempArray.push(license);
+            tempArray.push(value[i].item_id);
+            tempArray.push(value[i].quantity);
+            tempArray.push(value[i].item_metadata);
+
+            invArray.push(tempArray);
+
+            tempArray = [];
+          }
+        }
+
+        // If theres nothing in inventories, dont bother.
+        if (!invArray.length) { return; }
+
+        pool.query(insertSQL, [invArray], (err) => {
+          if (err) {
+            sendWH(`Err inserting DB:\n\n ${err}`)
+          } else {
+            sendWH(`Successfully updated inventory in \`${Date.now() - time}\`ms`);
+          }
+        });
+      }
+    });
+  }
+}, 1000 * 60 * 5); // 5 minutes
+
+
+
+// ----- Commands --------------------------------------------------------------------
+
+// To be removed and made into an export.
+RegisterCommand('give', (source, args, raw) => {
+  giveItem(source, parseInt(args[0]))
+}, false);
