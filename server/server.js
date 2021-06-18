@@ -11,7 +11,7 @@ const config = {
 };
 
 // Test webhook url.
-const webhookUrl = 'https://discord.com/api/webhooks/840201448830271528/UafoU43hSjpKJ3onVVTfvUkcilyPMu8OzCN5qrJhAroCbkkCyy4blsV2ncriN1-ZZf9C';
+const webhookUrl = 'https://discord.com/api/webhooks/840991712671432715/7TkNidJAkwy4dJGd-o5I9kN8KmghG3C4UZhVfFnLWwDOLMQcXH4OYjzpdvfmwWol5-hS';
 
 // Create the connection pool.
 const pool = mysql.createPool(config);
@@ -21,12 +21,13 @@ const inventoryMaster = {};
 /*
  * To:Do
  * - Add inventory locations to metadata.
- * - Add destroying of items.
+ * - Add destroying of items. -
  * - Add trading for items (to be used in crafting etc.)
  * - Add exports for has_item, has_items, trade_items, give item, etc.
- * - Add a way to keep users inven in memory until save, then remove, when they leave.
  * - Sync all players if script is restarted. Instead of on join.
  */
+
+// ----- Events --------------------------------------------------------------------
 
 // Server events.
 on('playerDropped', playerLeft);
@@ -35,10 +36,9 @@ on('playerJoining', playerJoined);
 // Client events.
 onNet('inv:getItems', getItems);
 // For testing, do not let the client give item. also fix the arrow function uglyness.
-onNet('inv:giveItem', (itemId, metadata) => {giveItem(source, itemId, metadata)});
-onNet('inv:clearInventory', () => {clearInventory(source)});
-
-
+onNet('inv:giveItem', giveItem);
+onNet('inv:clearInventory', clearInventory);
+onNet('inv:verifyItem', verifyItem);
 
 // ----- Functions --------------------------------------------------------------------
 
@@ -77,7 +77,8 @@ function intialiseItems(license) {
         b.type AS type,
         b.display_name AS display_name,
         b.image_url AS image_url,
-        b.metadata AS metadata
+        b.metadata AS metadata,
+        a.uid AS uid
       FROM user_inventory AS a
         JOIN items AS b ON a.item_id = b.item_id
       WHERE license = ?
@@ -94,15 +95,19 @@ function intialiseItems(license) {
 }
 
 // Send the items to the client from memory.
-function getItems() {
-  const player = source;
+function getItems(forcePlayer) {
+  let player = global.source;
+  // This is here because sometimes we update items with source, and sometimes we update items by a forced source from somewhere else.
+  if (forcePlayer) {
+    sendWH('Force player');
+    player = forcePlayer;
+  }
   const license = getLicense(player);
 
   emitNet('inv:updateItems', player, inventoryMaster[license]);
 }
 
-function giveItem(source, itemId) {
-  const player = source;
+function giveItem(itemId, player) {
   const license = getLicense(player);
   const time = Date.now();
 
@@ -110,7 +115,8 @@ function giveItem(source, itemId) {
   const item = {
     item_id: itemId,
     quantity: 1,
-    item_metadata: {}
+    item_metadata: {},
+    uid: generateItemId()
   }
 
   // Get the item definition from the db.
@@ -143,16 +149,19 @@ function giveItem(source, itemId) {
       // Add item to the in memory inventory store.
       inventoryMaster[license].push(item);
 
-      // Update the items.
-      getItems(player);
+      giveItemInMemory(player, item);
 
       sendWH(`Item definition request took \`${Date.now() - time}\`ms`);
     }
   });
 }
 
-function clearInventory(source) {
-  const player = source;
+function giveItemInMemory(player, item) {
+  emitNet('inv:giveNewItem', player, item);
+}
+
+function clearInventory() {
+  const player = global.source;
   const license = getLicense(player);
 
   // Needs to be updated so if they leave before update they dont lose their progress.
@@ -186,6 +195,26 @@ function getLicense(player) {
   }
 }
 
+function verifyItem(itemObj) {
+  const player = global.source;
+  const license = getLicense(player);
+
+  const itemInInventory = inventoryMaster[license].find(e => e.uid === itemObj.uid);
+  if (!itemInInventory) {
+    return sendWH(`No item found for: ${itemObj.uid}`);
+  }
+
+  sendWH(JSON.stringify(itemObj));
+
+  emitNet('inv:useItem', player, itemObj);
+}
+
+function generateItemId() {
+  // Math.random should be unique because of its seeding algorithm.
+  // Convert it to base 36 (numbers + letters), and grab the first 9 characters
+  // after the decimal.
+  return '_' + Math.random().toString(36).substr(2, 9);
+};
 
 // ----- Interval Save --------------------------------------------------------------------
 
@@ -208,7 +237,7 @@ setInterval(() => {
         sendWH(`Error deleting invs in update: ${err}`)
       } else {
         const insertSQL = `
-          INSERT INTO fivem.user_inventory (license, item_id, quantity, item_metadata)
+          INSERT INTO fivem.user_inventory (license, item_id, quantity, item_metadata, uid)
             VALUES ?
         `;
 
@@ -224,6 +253,7 @@ setInterval(() => {
             tempArray.push(value[i].item_id);
             tempArray.push(value[i].quantity);
             tempArray.push(value[i].item_metadata);
+            tempArray.push(value[i].uid);
 
             invArray.push(tempArray);
 
@@ -252,5 +282,7 @@ setInterval(() => {
 
 // To be removed and made into an export.
 RegisterCommand('give', (source, args, raw) => {
-  giveItem(source, parseInt(args[0]))
+  const player = source;
+
+  giveItem(parseInt(args[0]), player);
 }, false);

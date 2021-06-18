@@ -10,6 +10,7 @@ CREATE TABLE fivem.items (
 );
 
 CREATE TABLE fivem.user_inventory (
+  uid VARCHAR(100) NOT NULL,
   license VARCHAR(100),
   item_id int NOT NULL,
   quantity int NOT NULL DEFAULT 1,

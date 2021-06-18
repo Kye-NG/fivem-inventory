@@ -48,7 +48,7 @@
             >
               <template v-if="item">
                 <img :src="'./images/' + item.image_url" alt="image" width="60px" draggable="false">
-                <div class="item-text" v-bind:class="{ active: activeItem === columnIndex}">
+                <div class="item-text">
                   <p>{{ item.display_name }}</p>
                 </div>
               </template>

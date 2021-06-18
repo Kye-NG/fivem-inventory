@@ -1,14 +1,55 @@
 let menuOpen = false;
-let itemLayout = {};
-// let lastWeaponHash = '';
+let itemLayout = Array.from(35);
+let lastWeaponHash = '';
 
 onNet('inv:updateItems', (items) => {
-  itemLayout = items;
+  let itemLayout = Array.from(35);
+
+  for (let i = 0; i < items.length; i++) {
+    itemLayout.push(items[i]);
+  }
 
   SendNuiMessage(JSON.stringify({
     type: 'updateItems',
     items: itemLayout
   }))
+});
+
+onNet('inv:useItem', (item) => {
+  if (item.type === 1) {
+    console.log('useless item use');
+  } else if (item.type === 2) {
+    const pedId = PlayerPedId();
+
+    const metadata = JSON.parse(item.metadata);
+    const item_metadata = JSON.parse(item.item_metadata);
+
+    const weaponHash = GetHashKey(metadata.hash);
+
+    if (HasPedGotWeapon(pedId, weaponHash)) {
+      RemoveWeaponFromPed(pedId, weaponHash, false);
+
+      SetPedAmmo(pedId, weaponHash, 0);
+    } else {
+      RemoveWeaponFromPed(pedId, lastWeaponHash, false);
+
+      GiveWeaponToPed(pedId, weaponHash, 10, false, true);
+
+      SetPedAmmo(pedId, weaponHash, parseInt(item_metadata.ammunition));
+
+      lastWeaponHash = weaponHash;
+    }
+  }
+});
+
+onNet('inv:giveNewItem', (item) => {
+  console.log(itemLayout);
+  itemLayout.push(item);
+
+  SendNuiMessage(JSON.stringify({
+    type: 'newItem',
+    item
+  }));
 });
 
 on('playerSpawned', () => {
@@ -20,7 +61,26 @@ on('__cfx_nui:exit', (data, cb) => {
   toggleInventory();
 
   cb('ok');
-})
+});
+
+RegisterNuiCallbackType('iteminpos');
+on('__cfx_nui:iteminpos', (data, cb) => {
+  emitNet('inv:verifyItem', data.item);
+
+  cb('ok');
+});
+
+RegisterNuiCallbackType('move_item');
+on('__cfx_nui:move_item', (data, cb) => {
+  const fromIndex = (data.from[2] + 1) + (data.from[1] * 7);
+  const toIndex = (data.to[2] + 1) + (data.to[1] * 7);
+
+  const tempItem = itemLayout[fromIndex];
+  itemLayout[fromIndex] = itemLayout[toIndex];
+  itemLayout[toIndex] = tempItem;
+
+  cb('ok');
+});
 
 setTick(() => {
   BlockWeaponWheelThisFrame();
@@ -63,21 +123,21 @@ setTick(() => {
   }
 
   if (IsDisabledControlJustReleased(0, 157) && !menuOpen) {
-    useItem(1);
+    hotbarItemUse(1);
   } else if(IsDisabledControlJustReleased(0, 158) && !menuOpen) {
-    useItem(2);
+    hotbarItemUse(2);
   } else if(IsDisabledControlJustReleased(0, 160) && !menuOpen) {
-    useItem(3);
+    hotbarItemUse(3);
   } else if(IsDisabledControlJustReleased(0, 164) && !menuOpen) {
-    useItem(4);
+    hotbarItemUse(4);
   } else if(IsDisabledControlJustReleased(0, 165) && !menuOpen) {
-    useItem(5);
+    hotbarItemUse(5);
   } else if(IsDisabledControlJustReleased(0, 159) && !menuOpen) {
-    useItem(6);
+    hotbarItemUse(6);
   } else if(IsDisabledControlJustReleased(0, 161) && !menuOpen) {
-    useItem(7);
+    hotbarItemUse(7);
   }
-})
+});
 
 function toggleInventory() {
   menuOpen = !menuOpen;
@@ -96,6 +156,9 @@ function chat(text) {
   emit('chatMessage', '[inv]', [29, 233, 182], text);
 }
 
-function useItem(num) {
-  chat(`Attempting to use: ^*^6${num}`);
+function hotbarItemUse(num) {
+  SendNuiMessage(JSON.stringify({
+    type: 'getItemInPos',
+    pos: num
+  }));
 }

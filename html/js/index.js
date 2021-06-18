@@ -5,7 +5,6 @@ const app = new Vue({
   el: '#app',
   data: {
     menuOpen: false,
-    activeItem: null,
     inventory: [
       [null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null],
@@ -66,6 +65,23 @@ const app = new Vue({
         }
       }
 
+      else if (item.type === 'newItem') {
+        loop1:for (let row = 0; row < 5; row++) {
+          for (let col = 0; col < 7; col++) {
+            if (!this.inventory[row][col]) {
+              rowIndex = row;
+              colIndex = col;
+
+              this.inventory[row][col] = item.item;
+
+              break loop1;
+            }
+          }
+        }
+
+        console.log(`New item goes to: ${rowIndex}|${colIndex}`);
+      }
+
       else if(item.type === 'updateItems') {
         this.resetItems();
 
@@ -74,7 +90,9 @@ const app = new Vue({
 
         for (let obj of item.items) {
           // Set the obj to the item
-          this.inventory[row][i] = obj;
+          if (obj) {
+            this.inventory[row][i] = obj;
+          }
 
           i++;
 
@@ -86,8 +104,16 @@ const app = new Vue({
         }
       }
 
-      else if (item.type === 'activeChange') {
-        this.activeItem = item.activeId;
+      else if (item.type === 'getItemInPos') {
+        const itemInPos = this.inventory[4][item.pos - 1];
+
+        if (itemInPos) {
+          axios.post('https://fivem-inventory/iteminpos', { item: itemInPos} ).then(data => {
+            console.log(data);
+          }).catch(e => {
+            console.log(e);
+          });
+        }
       }
     },
     setupCloseListener(data) {
